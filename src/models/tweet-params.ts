@@ -2,16 +2,16 @@ import { UserBase } from "./user-params";
 
 /** basic response for getting tweet list */
 export interface TweetList {
-  tweets: Tweet[] ;
+  tweets: TweetBase[] ;
 }
 
 /** basic response for getting tweet information */
 export interface TweetInfo {
-  tweet: Tweet | null;
+  tweet: TweetBase | null;
 }
 
 /** tweet information */
-export interface Tweet {
+export interface TweetBase {
   id: number;
   message: string;
   user_id: number;

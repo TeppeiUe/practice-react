@@ -1,4 +1,4 @@
-import { Tweet } from "./tweet-params";
+import { TweetBase } from "./tweet-params";
 
 /** basic response for getting user information */
 export interface UserInfo {
@@ -17,7 +17,7 @@ export interface UserBase {
   profile: string;
   image: string;
   created_at?: Date;
-  tweets?: Tweet[] ;
+  tweets?: TweetBase[] ;
 }
 
 /** user-edit form */
