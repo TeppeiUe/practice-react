@@ -2,16 +2,24 @@ import { useState, useEffect } from "react"
 import axios, { AxiosResponse, AxiosError } from "axios"
 import { config } from "../const"
 import { UserList, UserBase } from "../models/user-params"
+import {
+  TableContainer,
+  Table,
+  TableHead,
+  TableBody,
+  TableRow,
+  TableCell,
+} from "@mui/material";
 
 const User = (props: { user: UserBase }) => {
   const { id, user_name, profile, created_at = new Date() } = props.user;
   return (
-    <tr>
-      <td>{id}</td>
-      <td>{user_name}</td>
-      <td>{profile}</td>
-      <td>{created_at.toString()}</td>
-    </tr>
+    <TableRow>
+      <TableCell>{id}</TableCell>
+      <TableCell>{user_name}</TableCell>
+      <TableCell>{profile}</TableCell>
+      <TableCell>{created_at.toString()}</TableCell>
+    </TableRow>
   )
 };
 
@@ -38,19 +46,21 @@ const Users = () => {
   const tableBody = users.map(user => <User user={user} key={user.id} />);
 
   return (
-    <table>
-      <thead>
-        <tr>
-          <th>id</th>
-          <th>user_name</th>
-          <th>profile</th>
-          <th>created_at</th>
-        </tr>
-      </thead>
-      <tbody>
-        {tableBody}
-      </tbody>
-    </table>
+    <TableContainer>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell>id</TableCell>
+            <TableCell>user_name</TableCell>
+            <TableCell>profile</TableCell>
+            <TableCell>created_at</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {tableBody}
+        </TableBody>
+      </Table>
+    </TableContainer>
   )
 }
 
