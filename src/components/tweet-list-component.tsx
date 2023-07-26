@@ -1,7 +1,5 @@
-import { useEffect, useState } from "react";
-import axios, { AxiosError, AxiosResponse } from "axios";
-import { config } from "../const";
-import { TweetBase, TweetList } from "../models/tweet-params";
+import React, { useEffect, useState } from "react";
+import { Tweet } from "../models/tweet-params";
 import {
   TableContainer,
   Table,
@@ -10,8 +8,10 @@ import {
   TableRow,
   TableCell,
 } from "@mui/material";
+import { TweetCommunicationService } from "../services/tweet-communication-service";
+import { ErrorResponse } from "../models/shared-params";
 
-const Tweet = (props: { tweet: TweetBase }) => {
+const TweetComponent = (props: { tweet: Tweet }) => {
   const { id, message, user, created_at, favorites } = props.tweet;
   return (
     <TableRow>
@@ -26,28 +26,18 @@ const Tweet = (props: { tweet: TweetBase }) => {
 };
 
 
-const Tweets = () => {
-  const [tweets, setTweets] = useState<TweetBase[]>([]);
+export const TweetListComponent = () => {
+  const [tweets, setTweets] = useState<Tweet[]>([]);
 
   useEffect(() => {
-    const options = {
-      url: config.API_ORIGIN + "/tweets",
-      method: "GET",
-    };
-
-    axios(options)
-      .then((res: AxiosResponse<TweetList>) => {
-        const { data, status } = res;
-        console.log('statusCode: ' + status);
-        console.dir(data);
-        setTweets(data.tweets);
-      }).catch((e: AxiosError<{ error: string }>) => {
-        console.error(e.message);
-      });
+    const tweetCommunicationService = new TweetCommunicationService();
+    tweetCommunicationService.index()
+    .then(res => setTweets(res.tweets))
+    .catch((e: ErrorResponse) => console.dir(e.message));
   }, []);
 
   const tableBody = tweets.map(tweet => (
-    <Tweet tweet={tweet} key={tweet.id} />
+    <TweetComponent tweet={tweet} key={tweet.id} />
   ));
 
   return (
@@ -69,8 +59,4 @@ const Tweets = () => {
       </Table>
     </TableContainer>
   )
-}
-
-export {
-  Tweets,
 }

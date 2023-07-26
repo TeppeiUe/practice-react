@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react"
-import axios, { AxiosResponse, AxiosError } from "axios"
-import { config } from "../const"
-import { UserList, UserBase } from "../models/user-params"
+import { UserBase } from "../models/user-params"
 import {
   TableContainer,
   Table,
@@ -10,8 +8,10 @@ import {
   TableRow,
   TableCell,
 } from "@mui/material";
+import { UserCommunicationService } from "../services/user-communication-service";
+import { ErrorResponse } from "../models/shared-params";
 
-const User = (props: { user: UserBase }) => {
+const UserComponent = (props: { user: UserBase }) => {
   const { id, user_name, profile, created_at = new Date() } = props.user;
   return (
     <TableRow>
@@ -23,27 +23,17 @@ const User = (props: { user: UserBase }) => {
   )
 };
 
-const Users = () => {
+export const UserListComponent = () => {
   const [users, setUsers] = useState<UserBase[]>([]);
 
   useEffect(() => {
-    const options = {
-      url: config.API_ORIGIN + "/users",
-      method: "GET",
-    };
-
-    axios(options)
-      .then((res: AxiosResponse<UserList>) => {
-        const { data, status } = res;
-        console.log('statusCode: ' + status);
-        console.dir(data);
-        setUsers(data.users);
-      }).catch((e: AxiosError<{ error: string }>) => {
-        console.error(e.message);
-      });
+    const userCommunicationSerivce = new UserCommunicationService();
+    userCommunicationSerivce.index()
+    .then(res => setUsers(res.users))
+    .catch((e: ErrorResponse) => console.dir(e.message));
   }, []);
   
-  const tableBody = users.map(user => <User user={user} key={user.id} />);
+  const tableBody = users.map(user => <UserComponent user={user} key={user.id} />);
 
   return (
     <TableContainer>
@@ -62,8 +52,4 @@ const Users = () => {
       </Table>
     </TableContainer>
   )
-}
-
-export {
-  Users,
 }

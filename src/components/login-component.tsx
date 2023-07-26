@@ -9,18 +9,23 @@ import {
   Button,
 } from "@mui/material";
 import { VisibilityOff, Visibility } from "@mui/icons-material";
+import { UserLoginForm } from "../models/user-params";
+import { AuthCommunicationService } from "../services/auth-communication-service";
+import { ErrorResponse } from "../models/shared-params";
 
-const SignUp = () => {
-  const [formData, setFormData] = useState({
+export const LoginComponent = () => {
+  const [formData, setFormData] = useState<UserLoginForm>({
     email: '',
-    user_name: '',
     password: '',
   });
 
   const [showPassword, setShowPassword] = useState(false);
 
   const handleClick = () => {
-    console.dir(formData);
+    const authCommunicationService = new AuthCommunicationService();
+    authCommunicationService.create(formData)
+    .then(res => console.dir(res))
+    .catch((e: ErrorResponse) => console.dir(e.message));
   }
 
   const handleClickShowPassword = () => setShowPassword(!showPassword);
@@ -50,16 +55,6 @@ const SignUp = () => {
       </FormControl>
 
       <FormControl variant="standard">
-        <InputLabel>user_name*</InputLabel>
-        <Input
-          type="text"
-          name="user_name"
-          value={formData.user_name}
-          onChange={handleChange}
-        />
-      </FormControl>
-
-      <FormControl variant="standard">
         <InputLabel>password*</InputLabel>
         <Input
           type={showPassword ? 'text' : 'password'}
@@ -83,12 +78,8 @@ const SignUp = () => {
         variant="contained"
         onClick={handleClick}
       >
-        新規登録
+        ログイン
       </Button>
     </Stack>
   )
-}
-
-export {
-  SignUp,
 }

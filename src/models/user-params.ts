@@ -1,34 +1,71 @@
-import { TweetBase } from "./tweet-params";
+import { Tweet } from "./tweet-params";
 
-/** basic response for getting user information */
-export interface UserInfo {
-  user: UserBase | null;
-}
-
-/** basic response for getting user list */
-export interface UserList {
-  users: UserBase[] ;
+/** user base */
+interface UserBase {
+  /** user_id */
+  id: number;
+  /** user_name */
+  user_name: string;
+  /** profile */
+  profile: string;
+  /** image */
+  image: string;
+  /** created_at */
+  created_at: Date;
 }
 
 /** user information */
-export interface UserBase {
-  id: number;
+interface User extends UserBase {
+  /** user tweets */
+  tweets: Tweet[];
+}
+
+/** user-info response */
+interface UserInfo {
+  /** user information */
+  user: User | null;
+}
+
+/** user-list response */
+interface UserList {
+  /** user list */
+  users: UserBase[];
+}
+
+/** user-add form */
+interface UserAddForm {
+  /** user_name */
   user_name: string;
-  profile: string;
-  image: string;
-  created_at?: Date;
-  tweets?: TweetBase[] ;
+  /** email */
+  email: string;
+  /** password */
+  password: string;
 }
 
 /** user-edit form */
-export interface UserEdit {
+interface UserEditForm {
+  /** user_name */
   user_name: string;
+  /** profile */
   profile: string;
+  /** image */
   image: string;
 }
 
 /** login form */
-export interface UserAuth {
+interface UserLoginForm {
+  /** email */
   email: string;
+  /** password */
   password: string;
+}
+
+export type {
+  UserBase,
+  User,
+  UserInfo,
+  UserList,
+  UserAddForm,
+  UserEditForm,
+  UserLoginForm,
 }

@@ -10,9 +10,10 @@ import {
 } from "@mui/material";
 import { VisibilityOff, Visibility } from "@mui/icons-material";
 
-const Login = () => {
+export const SignupComponent = () => {
   const [formData, setFormData] = useState({
     email: '',
+    user_name: '',
     password: '',
   });
 
@@ -49,6 +50,16 @@ const Login = () => {
       </FormControl>
 
       <FormControl variant="standard">
+        <InputLabel>user_name*</InputLabel>
+        <Input
+          type="text"
+          name="user_name"
+          value={formData.user_name}
+          onChange={handleChange}
+        />
+      </FormControl>
+
+      <FormControl variant="standard">
         <InputLabel>password*</InputLabel>
         <Input
           type={showPassword ? 'text' : 'password'}
@@ -72,12 +83,8 @@ const Login = () => {
         variant="contained"
         onClick={handleClick}
       >
-        ログイン
+        新規登録
       </Button>
     </Stack>
   )
-}
-
-export {
-  Login,
 }
