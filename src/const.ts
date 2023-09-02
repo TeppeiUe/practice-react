@@ -15,6 +15,7 @@ const authenticationApi = {
     url: 'login',
     method: 'post',
     ...{ headers },
+    withCredentials: true,
   },
   destroy: {
     url: 'logout',

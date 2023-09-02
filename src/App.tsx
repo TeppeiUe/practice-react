@@ -1,17 +1,9 @@
-import { Routes, Route, NavLink } from "react-router-dom";
-import { TweetListComponent } from "./components/tweet-list-component";
-import { UserListComponent } from "./components/user-list-component";
-import { LoginComponent } from "./components/login-component";
-import { SignupComponent } from "./components/signup-component";
+import { NavLink } from "react-router-dom";
+import { AppRouter } from "./AppRouter";
 
 const App = () => (
   <>
-    <Routes>
-      <Route path="login" element={<LoginComponent />}></Route>
-      <Route path="signup" element={<SignupComponent />}></Route>
-      <Route path="users" element={<UserListComponent />}></Route>
-      <Route path="tweets" element={<TweetListComponent />}></Route>
-    </Routes>
+  <AppRouter />
     <ul>
       <li>
         <NavLink

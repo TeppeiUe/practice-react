@@ -10,8 +10,11 @@ import {
 } from "@mui/material";
 import { VisibilityOff, Visibility } from "@mui/icons-material";
 import { UserLoginForm } from "../models/user-params";
-import { AuthCommunicationService } from "../services/auth-communication-service";
+import {
+  AuthCommunicationService
+} from "../services/auth-communication-service";
 import { ErrorResponse } from "../models/shared-params";
+import { useAuthContext } from "../services/auth-context-service";
 
 export const LoginComponent = () => {
   const [formData, setFormData] = useState<UserLoginForm>({
@@ -21,11 +24,13 @@ export const LoginComponent = () => {
 
   const [showPassword, setShowPassword] = useState(false);
 
+  const { setAuth } = useAuthContext();
+
   const handleClick = () => {
     const authCommunicationService = new AuthCommunicationService();
     authCommunicationService.create(formData)
-    .then(res => console.dir(res))
-    .catch((e: ErrorResponse) => console.dir(e.message));
+    .then(res => setAuth(res))
+    .catch((e: ErrorResponse) => console.dir(e));
   }
 
   const handleClickShowPassword = () => setShowPassword(!showPassword);
