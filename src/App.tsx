@@ -1,44 +1,18 @@
-import { NavLink } from "react-router-dom";
+import { Box } from "@mui/material";
 import { AppRouter } from "./AppRouter";
+import {
+  DrawerHeader,
+  HeaderComponent
+} from "./components/common/header-component";
 
 const App = () => (
-  <>
-  <AppRouter />
-    <ul>
-      <li>
-        <NavLink
-          style={({ isActive }) => isActive ? { color: 'blue' } : undefined }
-          to="login"
-        >
-          login
-        </NavLink>
-      </li>
-      <li>
-        <NavLink
-          style={({ isActive }) => isActive ? { color: 'blue' } : undefined }
-          to="signup"
-        >
-          signup
-        </NavLink>
-      </li>
-      <li>
-        <NavLink
-          style={({ isActive }) => isActive ? { color: 'blue' } : undefined }
-          to="users"
-        >
-          users
-        </NavLink>
-      </li>
-      <li>
-        <NavLink
-          style={({ isActive }) => isActive ? { color: 'blue' } : undefined }
-          to="tweets">
-          tweets
-        </NavLink>
-      </li>
-    </ul>
-  </>
-  
+  <Box sx={{ display: 'flex' }}>
+    <HeaderComponent />
+    <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+      <DrawerHeader />
+      <AppRouter />
+    </Box>
+  </Box>
 )
 
 export default App;
