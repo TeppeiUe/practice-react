@@ -8,8 +8,9 @@ import {
   TableRow,
   TableCell,
 } from "@mui/material";
-import { TweetCommunicationService } from "../services/tweet-communication-service";
-import { ErrorResponse } from "../models/shared-params";
+import {
+  TweetCommunicationService
+} from "../services/tweet-communication-service";
 
 const TweetComponent = (props: { tweet: Tweet }) => {
   const { id, message, user, created_at, favorites } = props.tweet;
@@ -33,7 +34,14 @@ export const TweetListComponent = () => {
     const tweetCommunicationService = new TweetCommunicationService();
     tweetCommunicationService.index()
     .then(res => setTweets(res.tweets))
-    .catch((e: ErrorResponse) => console.dir(e.message));
+    .catch(e => {
+      if (e !== undefined) {
+        console.dir(e);
+      }
+    });
+
+    // cancel the request
+    return () => tweetCommunicationService.abort()
   }, []);
 
   const tableBody = tweets.map(tweet => (

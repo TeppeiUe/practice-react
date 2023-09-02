@@ -14,7 +14,7 @@ export class TweetCommunicationService extends CommunicationService {
       .then(res => resolve(res.data))
       .catch((e: AxiosError<ErrorResponse>) => {
         if (e.isAxiosError) {
-          reject(e.response?.data);
+          reject(e.response);
         }
       });
     })
@@ -29,7 +29,7 @@ export class TweetCommunicationService extends CommunicationService {
       .then(res => resolve(res.data))
       .catch((e: AxiosError<ErrorResponse>) => {
         if (e.isAxiosError) {
-          reject(e.response?.data);
+          reject(e.response);
         }
       });
     })
@@ -43,7 +43,7 @@ export class TweetCommunicationService extends CommunicationService {
       .then(res => resolve(res.data))
       .catch((e: AxiosError<ErrorResponse>) => {
         if (e.isAxiosError) {
-          reject(e.response?.data);
+          reject(e.response);
         }
       });
     })
@@ -58,7 +58,7 @@ export class TweetCommunicationService extends CommunicationService {
       .then(() => resolve())
       .catch((e: AxiosError<ErrorResponse>) => {
         if (e.isAxiosError) {
-          reject(e.response?.data);
+          reject(e.response);
         }
       });
     })

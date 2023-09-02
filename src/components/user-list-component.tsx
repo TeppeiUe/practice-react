@@ -8,8 +8,9 @@ import {
   TableRow,
   TableCell,
 } from "@mui/material";
-import { UserCommunicationService } from "../services/user-communication-service";
-import { ErrorResponse } from "../models/shared-params";
+import {
+  UserCommunicationService
+} from "../services/user-communication-service";
 
 const UserComponent = (props: { user: UserBase }) => {
   const { id, user_name, profile, created_at = new Date() } = props.user;
@@ -27,13 +28,22 @@ export const UserListComponent = () => {
   const [users, setUsers] = useState<UserBase[]>([]);
 
   useEffect(() => {
-    const userCommunicationSerivce = new UserCommunicationService();
-    userCommunicationSerivce.index()
+    const userCommunicationService = new UserCommunicationService();
+    userCommunicationService.index()
     .then(res => setUsers(res.users))
-    .catch((e: ErrorResponse) => console.dir(e.message));
+    .catch(e => {
+      if (e !== undefined) {
+        console.error(e);
+      }
+    });
+
+    // cancel the request
+    return () => userCommunicationService.abort()
   }, []);
   
-  const tableBody = users.map(user => <UserComponent user={user} key={user.id} />);
+  const tableBody = users.map(user => (
+    <UserComponent user={user} key={user.id} />
+  ));
 
   return (
     <TableContainer>
