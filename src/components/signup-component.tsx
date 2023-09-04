@@ -9,9 +9,19 @@ import {
   Button,
 } from "@mui/material";
 import { VisibilityOff, Visibility } from "@mui/icons-material";
+import { UserAddForm } from "../models/user-params";
+import {
+  UserCommunicationService
+} from "../services/user-communication-service";
+import { ErrorResponse } from "../models/shared-params";
+import { useAuthContext } from "../services/auth-context-service";
+import {
+  ResponseState,
+  useResponseContext
+} from "../services/response-context-service";
 
 export const SignupComponent = () => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<UserAddForm>({
     email: '',
     user_name: '',
     password: '',
@@ -19,8 +29,25 @@ export const SignupComponent = () => {
 
   const [showPassword, setShowPassword] = useState(false);
 
+  const { setAuth } = useAuthContext();
+  const { setResponse } = useResponseContext();
+
   const handleClick = () => {
-    console.dir(formData);
+    const userCommunicationService = new UserCommunicationService();
+    userCommunicationService.create(formData)
+    .then(res => {
+      setResponse(new ResponseState());
+      setAuth(res);
+    })
+    .catch(e => {
+      if (e !== undefined) {
+        const { message } = e.data as ErrorResponse;
+        const responseState = new ResponseState();
+        responseState.severity = 'error';
+        responseState.message = message;
+        setResponse(responseState);
+      }
+    });
   }
 
   const handleClickShowPassword = () => setShowPassword(!showPassword);

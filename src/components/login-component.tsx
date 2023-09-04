@@ -15,6 +15,10 @@ import {
 } from "../services/auth-communication-service";
 import { ErrorResponse } from "../models/shared-params";
 import { useAuthContext } from "../services/auth-context-service";
+import {
+  ResponseState,
+  useResponseContext
+} from "../services/response-context-service";
 
 export const LoginComponent = () => {
   const [formData, setFormData] = useState<UserLoginForm>({
@@ -25,12 +29,24 @@ export const LoginComponent = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   const { setAuth } = useAuthContext();
+  const { setResponse } = useResponseContext();
 
   const handleClick = () => {
     const authCommunicationService = new AuthCommunicationService();
     authCommunicationService.create(formData)
-    .then(res => setAuth(res))
-    .catch((e: ErrorResponse) => console.dir(e));
+    .then(res => {
+      setResponse(new ResponseState());
+      setAuth(res);
+    })
+    .catch(e => {
+      if (e !== undefined) {
+        const { message } = e.data as ErrorResponse;
+        const responseState = new ResponseState();
+        responseState.severity = 'error';
+        responseState.message = message;
+        setResponse(responseState);
+      }
+    });
   }
 
   const handleClickShowPassword = () => setShowPassword(!showPassword);
