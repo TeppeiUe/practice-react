@@ -26,8 +26,9 @@ export const MenuListComponent = (props: { open: boolean }) => {
 
   return (
     <List>
-      {menuList.map(([text, icon]) => (
+      {menuList.map(([text, icon], i) => (
         <ListItem
+          key={i}
           disablePadding
           sx={{ display: 'block' }}
         >
