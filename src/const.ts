@@ -29,6 +29,7 @@ const userApi = {
   create: {
     url: 'user',
     method: 'post',
+    withCredentials: true,
     ...{ headers },
   },
   show: {
