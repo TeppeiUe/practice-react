@@ -1,51 +1,45 @@
 import { CommunicationService } from "./communication-service";
-import { authenticationApi } from "../const";
 import { UserLoginForm, UserBase } from "../models/user-params";
-import { AxiosError } from "axios";
-import { ErrorResponse } from "../models/shared-params";
+import { AxiosRequestConfig } from "axios";
 
+/**
+ * 認証関連API通信クラス
+ */
 export class AuthCommunicationService extends CommunicationService {
-  
-  public create(data: UserLoginForm): Promise<UserBase> {
-    const option = authenticationApi.create;
-    
-    return new Promise((resolve, reject) => {
-      this.axios<UserBase>({ ...option, data })
-      .then(res => resolve(res.data))
-      .catch((e: AxiosError<ErrorResponse>) => {
-        if (e.isAxiosError) {
-          reject(e.response);
-        }
-      });
-    })
+
+  /**
+   * ログインAPI
+   * @param data ログインbody
+   */
+  public create<T=UserLoginForm>(data: T): Promise<UserBase> {
+    const config: AxiosRequestConfig<T> = {
+      url: 'login',
+      method: 'post',
+      data,
+    }
+    return this.request<UserBase>(config)
   }
 
+  /**
+   * ログアウトAPI
+   */
   public destroy(): Promise<void> {
-    const option = authenticationApi.destroy;
-
-    return new Promise((resolve, reject) => {
-      this.axios(option)
-      .then(() => resolve())
-      .catch((e: AxiosError<ErrorResponse>) => {
-        if (e.isAxiosError) {
-          reject(e.response);
-        }
-      });
-    })
+    const config: AxiosRequestConfig = {
+      url: 'logout',
+      method: 'delete',
+    }
+    return this.request<void>(config)
   }
 
+  /**
+   * セッション確認API
+   */
   public session(): Promise<UserBase> {
-    const option = authenticationApi.session;
-    
-    return new Promise((resolve, reject) => {
-      this.axios<UserBase>(option)
-      .then(res => resolve(res.data))
-      .catch((e: AxiosError<ErrorResponse>) => {
-        if (e.isAxiosError) {
-          reject(e.response);
-        }
-      });
-    })
+    const config: AxiosRequestConfig = {
+      url: 'session',
+      method: 'post',
+    }
+    return this.request<UserBase>(config)
   }
 
 }

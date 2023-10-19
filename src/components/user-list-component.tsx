@@ -31,16 +31,12 @@ export const UserListComponent = () => {
     const userCommunicationService = new UserCommunicationService();
     userCommunicationService.index()
     .then(res => setUsers(res.users))
-    .catch(e => {
-      if (e !== undefined) {
-        console.error(e);
-      }
-    });
+    .catch(e => {/** cancel the request */});
 
     // cancel the request
     return () => userCommunicationService.abort()
   }, []);
-  
+
   const tableBody = users.map(user => (
     <UserComponent user={user} key={user.id} />
   ));

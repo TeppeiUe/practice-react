@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Tweet } from "../models/tweet-params";
 import {
   TableContainer,
@@ -34,11 +34,7 @@ export const TweetListComponent = () => {
     const tweetCommunicationService = new TweetCommunicationService();
     tweetCommunicationService.index()
     .then(res => setTweets(res.tweets))
-    .catch(e => {
-      if (e !== undefined) {
-        console.dir(e);
-      }
-    });
+    .catch(() => {/** cancel the request */});
 
     // cancel the request
     return () => tweetCommunicationService.abort()

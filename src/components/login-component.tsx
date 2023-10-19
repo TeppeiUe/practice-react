@@ -13,7 +13,6 @@ import { UserLoginForm } from "../models/user-params";
 import {
   AuthCommunicationService
 } from "../services/auth-communication-service";
-import { ErrorResponse } from "../models/shared-params";
 import { useAuthContext } from "../services/auth-context-service";
 import {
   ResponseState,
@@ -39,11 +38,8 @@ export const LoginComponent = () => {
       setAuth(res);
     })
     .catch(e => {
-      if (e !== undefined) {
-        const { message } = e.data as ErrorResponse;
-        const responseState = new ResponseState();
-        responseState.severity = 'error';
-        responseState.message = message;
+      const responseState = authCommunicationService.getResponseState(e);
+      if (responseState !== undefined) {
         setResponse(responseState);
       }
     });
