@@ -1,4 +1,8 @@
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
+import axios, {
+  AxiosInstance,
+  AxiosRequestConfig,
+  AxiosResponse
+} from "axios";
 import { createAxiosDefaults } from "../const";
 import { ErrorResponse } from "../models/shared-params";
 import { ResponseState } from "./response-context-service";
@@ -16,16 +20,36 @@ export class CommunicationService {
       ...createAxiosDefaults,
       signal,
     });
-    axiosInstance.interceptors.response.use(
-      res => {
-        console.log(`[request success] ${JSON.stringify(res.data)}`);
-        return res;
+
+    // リクエストログを設定
+    axiosInstance.interceptors.request.use(
+      req => {
+        const { data, params, url } = req;
+        console.log(
+          `[request success] url=[${url}], ` +
+          `params=[${JSON.stringify(params) ?? ''}], ` +
+          `data=[${JSON.stringify(data) ?? ''}]`
+        );
+        return req;
       },
       e => {
         console.error(`[request failure] ${e}`);
         return Promise.reject(e);
       }
     );
+
+    // レスポンスログを設定
+    axiosInstance.interceptors.response.use(
+      res => {
+        console.log(`[response success] ${JSON.stringify(res.data)}`);
+        return res;
+      },
+      e => {
+        console.error(`[response failure] ${e}`);
+        return Promise.reject(e);
+      }
+    );
+
     this.axios = axiosInstance;
   }
 
