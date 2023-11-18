@@ -12,6 +12,9 @@ import {
   UserCommunicationService
 } from "../services/user-communication-service";
 
+/**
+ * ユーザコンポーネント
+ */
 const UserComponent = (props: { user: UserBase }) => {
   const { id, user_name, profile, created_at = new Date() } = props.user;
   return (
@@ -24,7 +27,12 @@ const UserComponent = (props: { user: UserBase }) => {
   )
 };
 
+/**
+ * ユーザ一覧コンポーネント
+ */
 export const UserListComponent = () => {
+
+  // ユーザ一覧データ管理
   const [users, setUsers] = useState<UserBase[]>([]);
 
   useEffect(() => {
@@ -37,6 +45,7 @@ export const UserListComponent = () => {
     return () => userCommunicationService.abort()
   }, []);
 
+  /** ユーザ一覧 データ表示部生成 */
   const tableBody = users.map(user => (
     <UserComponent user={user} key={user.id} />
   ));

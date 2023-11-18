@@ -139,7 +139,7 @@ export const MenuListComponent = (props: { open: boolean }) => {
               >
                 {element}
               </ListItemIcon>
-              
+
               <ListItemText
                 primary={path}
                 sx={{ opacity: open ? 1 : 0 }}

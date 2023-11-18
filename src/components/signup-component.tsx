@@ -19,18 +19,25 @@ import {
   useResponseContext
 } from "../services/response-context-service";
 
+/**
+ * 新規登録コンポーネント
+ */
 export const SignupComponent = () => {
+
+  // 新規登録データ管理
   const [formData, setFormData] = useState<UserAddForm>({
     email: '',
     user_name: '',
     password: '',
   });
 
+  // パスワード表示・非表示状態管理
   const [showPassword, setShowPassword] = useState(false);
 
   const { setAuth } = useAuthContext();
   const { setResponse } = useResponseContext();
 
+  /** 新規登録ボタン押下イベント */
   const handleClick = () => {
     const userCommunicationService = new UserCommunicationService();
     userCommunicationService.create(formData)
@@ -46,12 +53,14 @@ export const SignupComponent = () => {
     });
   }
 
+  /** パスワード表示・非表示切り替えボタン押下イベント */
   const handleClickShowPassword = () => setShowPassword(!showPassword);
 
   const handleMouseDownPassword = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
   }
 
+  /** フォーム入力データの変更イベント */
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({
@@ -62,6 +71,8 @@ export const SignupComponent = () => {
 
   return (
     <Stack spacing={2} sx={{ m: 2 }}>
+
+      {/* メールアドレスフォーム */}
       <FormControl variant="standard">
         <InputLabel>email*</InputLabel>
         <Input
@@ -72,6 +83,7 @@ export const SignupComponent = () => {
         />
       </FormControl>
 
+      {/* ユーザ名フォーム */}
       <FormControl variant="standard">
         <InputLabel>user_name*</InputLabel>
         <Input
@@ -82,6 +94,7 @@ export const SignupComponent = () => {
         />
       </FormControl>
 
+      {/* パスワードフォーム */}
       <FormControl variant="standard">
         <InputLabel>password*</InputLabel>
         <Input
@@ -90,6 +103,7 @@ export const SignupComponent = () => {
           value={formData.password}
           onChange={handleChange}
           endAdornment={
+            // パスワード表示・非表示切り替えボタン
             <InputAdornment position="end">
               <IconButton
                 onClick={handleClickShowPassword}
@@ -102,6 +116,7 @@ export const SignupComponent = () => {
         />
       </FormControl>
 
+      {/* 新規登録ボタン */}
       <Button
         variant="contained"
         onClick={handleClick}

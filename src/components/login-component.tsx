@@ -19,17 +19,24 @@ import {
   useResponseContext
 } from "../services/response-context-service";
 
+/**
+ * ログインコンポーネント
+ */
 export const LoginComponent = () => {
+
+  // ログインデータ管理
   const [formData, setFormData] = useState<UserLoginForm>({
     email: '',
     password: '',
   });
 
+  // パスワード表示・非表示状態管理
   const [showPassword, setShowPassword] = useState(false);
 
   const { setAuth } = useAuthContext();
   const { setResponse } = useResponseContext();
 
+  /** ログインボタン押下イベント */
   const handleClick = () => {
     const authCommunicationService = new AuthCommunicationService();
     authCommunicationService.create(formData)
@@ -45,12 +52,14 @@ export const LoginComponent = () => {
     });
   }
 
+  /** パスワード表示・非表示切り替えボタン押下イベント */
   const handleClickShowPassword = () => setShowPassword(!showPassword);
 
   const handleMouseDownPassword = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
   }
 
+  /** フォーム入力データの変更イベント */
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({
@@ -61,6 +70,8 @@ export const LoginComponent = () => {
 
   return (
     <Stack spacing={2} sx={{ m: 2 }}>
+
+      {/* メールアドレスフォーム */}
       <FormControl variant="standard">
         <InputLabel>email*</InputLabel>
         <Input
@@ -71,6 +82,7 @@ export const LoginComponent = () => {
         />
       </FormControl>
 
+      {/* パスワードフォーム */}
       <FormControl variant="standard">
         <InputLabel>password*</InputLabel>
         <Input
@@ -79,6 +91,7 @@ export const LoginComponent = () => {
           value={formData.password}
           onChange={handleChange}
           endAdornment={
+            // パスワード表示・非表示切り替えボタン
             <InputAdornment position="end">
               <IconButton
                 onClick={handleClickShowPassword}
@@ -91,6 +104,7 @@ export const LoginComponent = () => {
         />
       </FormControl>
 
+      {/* ログインボタン */}
       <Button
         variant="contained"
         onClick={handleClick}

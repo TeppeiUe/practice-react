@@ -12,6 +12,9 @@ import {
   TweetCommunicationService
 } from "../services/tweet-communication-service";
 
+/**
+ * ツイートコンポーネント
+ */
 const TweetComponent = (props: { tweet: Tweet }) => {
   const { id, message, user, created_at, favorites } = props.tweet;
   return (
@@ -26,8 +29,12 @@ const TweetComponent = (props: { tweet: Tweet }) => {
   )
 };
 
-
+/**
+ * ツイート一覧コンポーネント
+ */
 export const TweetListComponent = () => {
+
+  // ツイート一覧データ管理
   const [tweets, setTweets] = useState<Tweet[]>([]);
 
   useEffect(() => {
@@ -40,6 +47,7 @@ export const TweetListComponent = () => {
     return () => tweetCommunicationService.abort()
   }, []);
 
+  /** ツイート一覧 データ表示部生成 */
   const tableBody = tweets.map(tweet => (
     <TweetComponent tweet={tweet} key={tweet.id} />
   ));

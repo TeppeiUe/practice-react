@@ -51,6 +51,9 @@ interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
 }
 
+/**
+ * ヘッダーバー
+ */
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'open',
 })<AppBarProps>(({ theme, open }) => ({
@@ -86,6 +89,9 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   }),
 );
 
+/**
+ * ヘッダーコンポーネント
+ */
 export const HeaderComponent = () => {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
