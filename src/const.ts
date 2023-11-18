@@ -1,4 +1,4 @@
-import { AxiosRequestConfig, CreateAxiosDefaults } from "axios";
+import { CreateAxiosDefaults } from "axios";
 
 
 const createAxiosDefaults: CreateAxiosDefaults = {

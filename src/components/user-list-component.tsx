@@ -31,7 +31,7 @@ export const UserListComponent = () => {
     const userCommunicationService = new UserCommunicationService();
     userCommunicationService.index()
     .then(res => setUsers(res.users))
-    .catch(e => {/** cancel the request */});
+    .catch(() => {/** cancel the request */});
 
     // cancel the request
     return () => userCommunicationService.abort()

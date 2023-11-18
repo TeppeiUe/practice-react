@@ -1,4 +1,4 @@
-import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 import { createAxiosDefaults } from "../const";
 import { ErrorResponse } from "../models/shared-params";
 import { ResponseState } from "./response-context-service";

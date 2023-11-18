@@ -19,7 +19,7 @@ class ResponseState {
   open: boolean = true;
   message: string[] = ['success'];
   severity: 'success' | 'error' = 'success';
-};
+}
 
 const ResponseContext = createContext<UseState<ResponseState>>({
   response: new ResponseState(),
