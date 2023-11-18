@@ -1,6 +1,6 @@
 /** error response */
 interface ErrorResponse {
-  message: string[];
+  message: string;
 }
 
 export type {

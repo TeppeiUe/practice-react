@@ -17,7 +17,7 @@ interface UseState<T> {
  */
 class ResponseState {
   open: boolean = true;
-  message: string[] = ['success'];
+  message: string = 'success';
   severity: 'success' | 'error' = 'success';
 }
 
