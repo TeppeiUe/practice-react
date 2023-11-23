@@ -1,6 +1,6 @@
 import { ReactNode, useEffect } from "react";
-import { useAuthContext } from "./provider/AuthContextProvider";
-import { axiosClient } from "./provider/AxiosClientProvider";
+import { axiosClient } from "./context/AxiosClient";
+import { useAuthContext } from "./context/AuthContext";
 
 /**
  * 認証ルーティング

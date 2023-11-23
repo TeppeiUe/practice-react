@@ -12,8 +12,8 @@ import ForumIcon from '@mui/icons-material/Forum';
 import PeopleIcon from '@mui/icons-material/People';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useAuthContext } from '../../provider/AuthContextProvider';
-import { axiosClient } from '../../provider/AxiosClientProvider';
+import { useAuthContext } from '../../context/AuthContext';
+import { axiosClient } from '../../context/AxiosClient';
 
 /**
  * メニューに表示する情報の定義

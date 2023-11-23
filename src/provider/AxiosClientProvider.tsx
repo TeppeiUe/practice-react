@@ -1,17 +1,6 @@
-import axios from "axios";
 import { ReactNode, useEffect, useState } from "react";
 import { Alert, Snackbar } from "@mui/material";
-
-/**
- * Axiosインスタンス
- */
-const axiosClient = axios.create({
-  baseURL: 'http://localhost:8080',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  withCredentials: true,
-});
+import { axiosClient } from "../context/AxiosClient";
 
 /**
  * スナックバーの表示状態
@@ -28,7 +17,7 @@ class ResponseState {
 /**
  * Axiosインスタンスプロバイダー
  */
-const AxiosClientProvider = ({ children }: { children: ReactNode }) => {
+export const AxiosClientProvider = ({ children }: { children: ReactNode }) => {
 
   const responseDefault = new ResponseState();
   responseDefault.open = false;
@@ -114,9 +103,4 @@ const AxiosClientProvider = ({ children }: { children: ReactNode }) => {
       {children}
     </>
   )
-}
-
-export {
-  axiosClient,
-  AxiosClientProvider,
 }

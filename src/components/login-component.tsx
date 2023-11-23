@@ -10,8 +10,8 @@ import {
 } from "@mui/material";
 import { VisibilityOff, Visibility } from "@mui/icons-material";
 import { UserBase, UserLoginForm } from "../models/user-params";
-import { useAuthContext } from "../provider/AuthContextProvider";
-import { axiosClient } from "../provider/AxiosClientProvider";
+import { useAuthContext } from "../context/AuthContext";
+import { axiosClient } from "../context/AxiosClient";
 
 /**
  * ログインコンポーネント

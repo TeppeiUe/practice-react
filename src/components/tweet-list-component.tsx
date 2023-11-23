@@ -8,7 +8,7 @@ import {
   TableRow,
   TableCell,
 } from "@mui/material";
-import { axiosClient } from "../provider/AxiosClientProvider";
+import { axiosClient } from "../context/AxiosClient";
 
 /**
  * ツイートコンポーネント
