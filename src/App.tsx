@@ -4,7 +4,6 @@ import {
   DrawerHeader,
   HeaderComponent
 } from "./components/common/header-component";
-import { CommunicationComponent } from "./components/common/communication-component";
 
 const App = () => (
   <Box sx={{ display: 'flex' }}>
@@ -13,7 +12,6 @@ const App = () => (
       <DrawerHeader />
       <AppRouter />
     </Box>
-    <CommunicationComponent />
   </Box>
 )
 
