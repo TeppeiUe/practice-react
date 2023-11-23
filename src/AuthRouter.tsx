@@ -1,26 +1,35 @@
 import { ReactNode, useEffect } from "react";
-import { useAuthContext } from "./services/auth-context-service";
-import { AuthCommunicationService } from "./services/auth-communication-service";
+import { useAuthContext } from "./provider/AuthContextProvider";
+import { axiosClient } from "./provider/AxiosClientProvider";
 
 /**
  * 認証ルーティング
  */
-const AuthRoute = ({ privateRoute, guestRoute }: { privateRoute: ReactNode, guestRoute: ReactNode }) => {
+const AuthRoute = ({ privateRoute, guestRoute }: {
+  /** 要ログインルーティング */
+  privateRoute: ReactNode,
+  /** 非ログインルーティング */
+  guestRoute: ReactNode
+}) => {
   const { auth, setAuth } = useAuthContext();
 
   useEffect(() => {
+    const abortController = new AbortController();
+
     if (!auth) {
-      const authCommunicationService = new AuthCommunicationService();
-      authCommunicationService.session()
-      .then(res => setAuth(res))
+      axiosClient({
+        url: 'session',
+        method: 'post',
+        signal: abortController.signal,
+      })
+      .then(res => setAuth(res.data))
       .catch(e => {
         if (e?.status === 401) {
           setAuth(null);
         }
       });
 
-      // cancel the request
-      return () => authCommunicationService.abort()
+      return () => abortController.abort()
     }
   },
   // eslint-disable-next-line
