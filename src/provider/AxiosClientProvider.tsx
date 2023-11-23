@@ -1,6 +1,7 @@
 import { ReactNode, useEffect, useState } from "react";
 import { Alert, Snackbar } from "@mui/material";
 import { axiosClient } from "../context/AxiosClient";
+import { isCancel } from "axios";
 
 /**
  * スナックバーの表示状態
@@ -31,14 +32,14 @@ export const AxiosClientProvider = ({ children }: { children: ReactNode }) => {
       req => {
         const { data, params, url } = req;
         console.log(
-          `[request success] url=[${url}], ` +
+          `[request] url=[${url}], ` +
           `params=[${JSON.stringify(params) ?? ''}], ` +
           `data=[${JSON.stringify(data) ?? ''}]`
         );
         return req;
       },
       e => {
-        console.error(`[request failure] ${e}`);
+        console.error(`[request] ${e}`);
         return Promise.reject(e);
       }
     );
@@ -46,20 +47,29 @@ export const AxiosClientProvider = ({ children }: { children: ReactNode }) => {
     // レスポンスログを設定
     const responseInterceptor = axiosClient.interceptors.response.use(
       res => {
-        console.log(`[response success] ${JSON.stringify(res.data)}`);
-        if (res.config.method !== 'get') {
+        const { data, status, statusText, config } = res;
+        console.log(`[response] status=[${status} ${statusText}], ` +
+          `body=[${data ? JSON.stringify(data) : ''}]`
+        );
+        // getメソッド以外の場合スナックバーを表示
+        if (config.method !== 'get') {
           setResponse(new ResponseState());
         }
         return res;
       },
       e => {
-        console.error(`[response failure] ${e}`);
-        if(e?.response?.data !== undefined) {
-          const { message } = e.response.data;
-          const responseState = new ResponseState();
-          responseState.severity = 'error';
-          responseState.message = message;
-          setResponse(responseState);
+        if (e.isAxiosError && !isCancel(e)) {
+          const { data, status, statusText } = e.response;
+          console.log(
+            `[response] status=[${status} ${statusText}], ` +
+            `body=[${JSON.stringify(data)}]`
+          );
+          if(data !== undefined) {
+            const responseState = new ResponseState();
+            responseState.severity = 'error';
+            responseState.message = data.message;
+            setResponse(responseState);
+          }
         }
         return Promise.reject(e);
       }

@@ -44,7 +44,7 @@ export const TweetListComponent = () => {
       signal: abortController.signal,
     })
     .then(res => setTweets(res.data.tweets))
-    .catch(e => console.error(e));
+    .catch(e => console.error(e.stack));
 
     return () => abortController.abort()
   }, []);

@@ -42,7 +42,7 @@ export const UserListComponent = () => {
       signal: abortController.signal,
     })
     .then(res => setUsers(res.data.users))
-    .catch(e => console.error(e));
+    .catch(e => console.error(e.stack));
 
     return () => abortController.abort()
   }, []);

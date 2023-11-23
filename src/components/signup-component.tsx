@@ -38,7 +38,7 @@ export const SignupComponent = () => {
       data: formData,
     })
     .then(res => setAuth(res.data))
-    .catch(e => console.error(e));
+    .catch(e => console.error(e.stack));
   }
 
   /** パスワード表示・非表示切り替えボタン押下イベント */

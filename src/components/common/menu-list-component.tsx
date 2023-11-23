@@ -59,7 +59,7 @@ export const MenuListComponent = (props: { open: boolean }) => {
       setAuth(null);
       navigate('/login');
     })
-    .catch(e => console.error(e));
+    .catch(e => console.error(e.stack));
   }
 
   /**
