@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Tweet } from "../models/tweet-params";
+import { Tweet, TweetList } from "../models/tweet-params";
 import {
   TableContainer,
   Table,
@@ -8,9 +8,7 @@ import {
   TableRow,
   TableCell,
 } from "@mui/material";
-import {
-  TweetCommunicationService
-} from "../services/tweet-communication-service";
+import { axiosClient } from "../provider/AxiosClientProvider";
 
 /**
  * ツイートコンポーネント
@@ -38,13 +36,17 @@ export const TweetListComponent = () => {
   const [tweets, setTweets] = useState<Tweet[]>([]);
 
   useEffect(() => {
-    const tweetCommunicationService = new TweetCommunicationService();
-    tweetCommunicationService.index()
-    .then(res => setTweets(res.tweets))
-    .catch(() => {/** cancel the request */});
+    const abortController  = new AbortController();
 
-    // cancel the request
-    return () => tweetCommunicationService.abort()
+    axiosClient<TweetList>({
+      url: 'tweets',
+      method: 'get',
+      signal: abortController.signal,
+    })
+    .then(res => setTweets(res.data.tweets))
+    .catch(e => console.error(e));
+
+    return () => abortController.abort()
   }, []);
 
   /** ツイート一覧 データ表示部生成 */

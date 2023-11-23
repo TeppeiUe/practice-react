@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { UserBase } from "../models/user-params"
+import { UserBase, UserList } from "../models/user-params"
 import {
   TableContainer,
   Table,
@@ -8,9 +8,7 @@ import {
   TableRow,
   TableCell,
 } from "@mui/material";
-import {
-  UserCommunicationService
-} from "../services/user-communication-service";
+import { axiosClient } from "../provider/AxiosClientProvider";
 
 /**
  * ユーザコンポーネント
@@ -36,13 +34,17 @@ export const UserListComponent = () => {
   const [users, setUsers] = useState<UserBase[]>([]);
 
   useEffect(() => {
-    const userCommunicationService = new UserCommunicationService();
-    userCommunicationService.index()
-    .then(res => setUsers(res.users))
-    .catch(() => {/** cancel the request */});
+    const abortController = new AbortController();
 
-    // cancel the request
-    return () => userCommunicationService.abort()
+    axiosClient<UserList>({
+      url: 'users',
+      method: 'get',
+      signal: abortController.signal,
+    })
+    .then(res => setUsers(res.data.users))
+    .catch(e => console.error(e));
+
+    return () => abortController.abort()
   }, []);
 
   /** ユーザ一覧 データ表示部生成 */

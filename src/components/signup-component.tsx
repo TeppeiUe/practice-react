@@ -9,15 +9,9 @@ import {
   Button,
 } from "@mui/material";
 import { VisibilityOff, Visibility } from "@mui/icons-material";
-import { UserAddForm } from "../models/user-params";
-import {
-  UserCommunicationService
-} from "../services/user-communication-service";
-import { useAuthContext } from "../services/auth-context-service";
-import {
-  ResponseState,
-  useResponseContext
-} from "../services/response-context-service";
+import { UserAddForm, UserBase } from "../models/user-params";
+import { useAuthContext } from "../provider/AuthContextProvider";
+import { axiosClient } from "../provider/AxiosClientProvider";
 
 /**
  * 新規登録コンポーネント
@@ -35,22 +29,16 @@ export const SignupComponent = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   const { setAuth } = useAuthContext();
-  const { setResponse } = useResponseContext();
 
   /** 新規登録ボタン押下イベント */
   const handleClick = () => {
-    const userCommunicationService = new UserCommunicationService();
-    userCommunicationService.create(formData)
-    .then(res => {
-      setResponse(new ResponseState());
-      setAuth(res);
+    axiosClient<UserBase>({
+      url: 'user',
+      method: 'post',
+      data: formData,
     })
-    .catch(e => {
-      const responseState = userCommunicationService.getResponseState(e);
-      if (responseState !== undefined) {
-        setResponse(responseState);
-      }
-    });
+    .then(res => setAuth(res.data))
+    .catch(e => console.error(e));
   }
 
   /** パスワード表示・非表示切り替えボタン押下イベント */

@@ -12,15 +12,8 @@ import ForumIcon from '@mui/icons-material/Forum';
 import PeopleIcon from '@mui/icons-material/People';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useLocation, useNavigate } from 'react-router-dom';
-import {
-  AuthCommunicationService
-} from '../../services/auth-communication-service';
-import { ErrorResponse } from '../../models/shared-params';
-import { useAuthContext } from '../../services/auth-context-service';
-import {
-  ResponseState,
-  useResponseContext
-} from '../../services/response-context-service';
+import { useAuthContext } from '../../provider/AuthContextProvider';
+import { axiosClient } from '../../provider/AxiosClientProvider';
 
 /**
  * メニューに表示する情報の定義
@@ -45,7 +38,6 @@ export const MenuListComponent = (props: { open: boolean }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const { auth, setAuth } = useAuthContext();
-  const { setResponse } = useResponseContext();
 
   /**
    * 通常ハンドラ
@@ -59,22 +51,15 @@ export const MenuListComponent = (props: { open: boolean }) => {
    * ログアウト用ハンドラ
    */
   const handleLogoutClick = () => {
-    const authCommunicationService = new AuthCommunicationService();
-    authCommunicationService.destroy()
+    axiosClient({
+      url: 'logout',
+      method: 'delete',
+    })
     .then(() => {
-      setResponse(new ResponseState());
       setAuth(null);
       navigate('/login');
     })
-    .catch(e => {
-      if (e !== undefined) {
-        const { message } = e.data as ErrorResponse;
-        const responseState = new ResponseState();
-        responseState.severity = 'error';
-        responseState.message = message;
-        setResponse(responseState);
-      }
-    });
+    .catch(e => console.error(e));
   }
 
   /**
