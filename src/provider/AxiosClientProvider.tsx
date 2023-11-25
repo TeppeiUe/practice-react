@@ -2,6 +2,9 @@ import { ReactNode, useEffect, useState } from "react";
 import { Alert, Snackbar } from "@mui/material";
 import { axiosClient } from "../context/AxiosClient";
 import { isCancel } from "axios";
+import { useNavigate } from "react-router-dom";
+import { useAuthContext } from "../context/AuthContext";
+import { DialogState, useDialogContext } from "../context/DialogContext";
 
 /**
  * スナックバーの表示状態
@@ -19,6 +22,10 @@ class ResponseState {
  * Axiosインスタンスプロバイダー
  */
 export const AxiosClientProvider = ({ children }: { children: ReactNode }) => {
+
+  const navigate = useNavigate();
+  const { setAuth } = useAuthContext();
+  const { setDialog } = useDialogContext();
 
   const responseDefault = new ResponseState();
   responseDefault.open = false;
@@ -51,10 +58,12 @@ export const AxiosClientProvider = ({ children }: { children: ReactNode }) => {
         console.log(`[response] status=[${status} ${statusText}], ` +
           `body=[${data ? JSON.stringify(data) : ''}]`
         );
+
         // getメソッド以外の場合スナックバーを表示
         if (config.method !== 'get') {
           setResponse(new ResponseState());
         }
+
         return res;
       },
       e => {
@@ -64,13 +73,23 @@ export const AxiosClientProvider = ({ children }: { children: ReactNode }) => {
             `[response] status=[${status} ${statusText}], ` +
             `body=[${JSON.stringify(data)}]`
           );
-          if(data !== undefined) {
+
+          // 非ログインの場合
+          if (status === 401) {
+            setAuth(null);
+            setDialog(new DialogState);
+            navigate('/login');
+          }
+
+          // エラー内容のスナックバーを表示
+          if(data?.message !== undefined) {
             const responseState = new ResponseState();
             responseState.severity = 'error';
             responseState.message = data.message;
             setResponse(responseState);
           }
         }
+
         return Promise.reject(e);
       }
     );

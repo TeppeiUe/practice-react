@@ -23,11 +23,7 @@ const AuthRoute = ({ privateRoute, guestRoute }: {
         signal: abortController.signal,
       })
       .then(res => setAuth(res.data))
-      .catch(e => {
-        if (e?.status === 401) {
-          setAuth(null);
-        }
-      });
+      .catch(e => console.error(e.stack));
 
       return () => abortController.abort()
     }

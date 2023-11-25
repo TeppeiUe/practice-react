@@ -5,6 +5,7 @@ import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 import { AuthContextProvider } from './provider/AuthContextProvider';
 import { AxiosClientProvider } from './provider/AxiosClientProvider';
+import { DialogProvider } from './provider/DialogProvider';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -14,7 +15,9 @@ root.render(
     <BrowserRouter>
       <AuthContextProvider>
         <AxiosClientProvider>
-          <App />
+          <DialogProvider>
+            <App />
+          </DialogProvider>
         </AxiosClientProvider>
       </AuthContextProvider>
     </BrowserRouter>

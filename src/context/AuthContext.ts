@@ -7,7 +7,9 @@ import {
 import { UserBase } from "../models/user-params";
 
 interface UseState<T> {
+  /** ログインユーザ情報 */
   auth: T,
+  /** ログインユーザ情報の設定 */
   setAuth: Dispatch<SetStateAction<T>>
 }
 

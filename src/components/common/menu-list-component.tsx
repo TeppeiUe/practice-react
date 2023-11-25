@@ -10,16 +10,19 @@ import LoginIcon from '@mui/icons-material/Login';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import ForumIcon from '@mui/icons-material/Forum';
 import PeopleIcon from '@mui/icons-material/People';
+import AddIcon from '@mui/icons-material/Add';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../../context/AuthContext';
 import { axiosClient } from '../../context/AxiosClient';
+import { DialogState, useDialogContext } from '../../context/DialogContext';
+import { TweetFormComponent } from '../tweet-form-component';
 
 /**
  * メニューに表示する情報の定義
  */
 interface MenuItemInfo {
-  /** 遷移パス */
+  /** 遷移パス（兼tip表示） */
   path: string;
   /** Icon Element */
   element: JSX.Element;
@@ -38,6 +41,7 @@ export const MenuListComponent = (props: { open: boolean }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const { auth, setAuth } = useAuthContext();
+  const { setDialog } = useDialogContext();
 
   /**
    * 通常ハンドラ
@@ -55,12 +59,19 @@ export const MenuListComponent = (props: { open: boolean }) => {
       url: 'logout',
       method: 'delete',
     })
-    .then(() => {
-      setAuth(null);
-      navigate('/login');
-    })
+    .then(() => setAuth(null))
     .catch(e => console.error(e.stack));
   }
+
+  /**
+   * ツイート用ハンドラ
+   */
+  const handleTweetAddClick = () => {
+    setDialog(new DialogState(
+      <TweetFormComponent />,
+      true
+    ));
+  };
 
   /**
    * メニューに表示する情報リスト
@@ -85,6 +96,11 @@ export const MenuListComponent = (props: { open: boolean }) => {
     element: <PeopleIcon />,
     isPrivate: true,
     handler: handleClick,
+  }, {
+    path: 'tweet',
+    element: <AddIcon />,
+    isPrivate: true,
+    handler: handleTweetAddClick,
   }, {
     path: 'logout',
     element: <LogoutIcon />,
