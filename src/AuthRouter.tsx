@@ -27,9 +27,10 @@ const AuthRoute = ({ privateRoute, guestRoute }: {
 
       return () => abortController.abort()
     }
-  },
-  // eslint-disable-next-line
-  []);
+  }, [
+    auth,
+    setAuth
+  ]);
 
   return (
     auth
