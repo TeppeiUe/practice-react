@@ -10,7 +10,7 @@ import { DialogComponent } from "./components/common/dialog-component";
 
 const App = () => (
   <>
-    <BrowserRouter>
+    <BrowserRouter basename={ import.meta.env.VITE_CONTEXT_PATH || '' }>
       <AxiosClientProvider>
         <Box sx={{ display: 'flex' }}>
           <HeaderComponent />
