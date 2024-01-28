@@ -99,8 +99,12 @@ export const AxiosClientProvider = ({ children }: { children: ReactNode }) => {
       axiosClient.interceptors.request.eject(requestInterceptor);
       axiosClient.interceptors.response.eject(responseInterceptor);
     }
-
-  }, []);
+  }, [
+    navigate,
+    setAuth,
+    setDialog,
+    response
+  ]);
 
   /** スナックバー非表示用ハンドラ */
   const handleClose = (_event?: React.SyntheticEvent | Event, reason?: string) => {
